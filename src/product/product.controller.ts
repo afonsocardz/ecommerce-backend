@@ -1,0 +1,16 @@
+import { Controller, Post, Body } from '@nestjs/common';
+import { ProductService } from './product.service';
+import { Product } from '@prisma/client';
+
+@Controller('produtos')
+export class ProdutoController {
+  constructor(private productService: ProductService) {}
+
+  @Post()
+  async criarProduto(
+    @Body() body: { name: string; price: number },
+  ): Promise<Product> {
+    const { name, price } = body;
+    return this.productService.createProduct(name, price);
+  }
+}
