@@ -9,6 +9,12 @@ export class ProductEntity implements Product {
   name: string;
 
   @ApiProperty()
+  description: string;
+
+  @ApiProperty()
+  imageUrl: string;
+
+  @ApiProperty()
   price: number;
 
   @ApiProperty()

@@ -8,7 +8,23 @@ export class CreateProductDto {
   name: string;
 
   @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  imageUrl: string;
+
+  @IsNotEmpty()
   @IsNumber()
   @ApiProperty()
   price: number;
+}
+
+export class SearchProductsDto {
+  @IsString()
+  @ApiProperty()
+  searchQuery: string;
 }
