@@ -8,7 +8,12 @@ import {
 import { ProductService } from './product.service';
 import { Product } from '@prisma/client';
 import { CreateProductDto } from './product.dto';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiQuery,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ProductEntity } from './product.entity';
 
 @Controller('products')
@@ -19,9 +24,7 @@ export class ProductController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiOperation({ summary: 'Creates a product for e-commerce' })
-  @ApiResponse({
-    status: 201,
-    description: 'Created product',
+  @ApiCreatedResponse({
     type: [ProductEntity],
   })
   @ApiQuery({
