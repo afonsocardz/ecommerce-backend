@@ -11,22 +11,24 @@ datasource db {
 }
 
 model Product {
-  id        Int           @id @default(autoincrement())
-  name      String
-  price     Float
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  CartProduct  CartProduct[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  price       Float
+  description String
+  imageUrl    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  CartProduct CartProduct[]
 
   @@map("products")
 }
 
 model Cart {
-  id        Int           @id @default(autoincrement())
-  userId    Int           @unique
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  CartProducts  CartProduct[]
+  id           Int           @id @default(autoincrement())
+  userId       Int           @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  CartProducts CartProduct[]
 
   @@map("carts")
 }
