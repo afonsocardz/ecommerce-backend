@@ -4,6 +4,11 @@ import { AppService } from './app.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
+
+  const appModule = app.get(AppModule);
+  appModule.configureSwagger(app);
+
   const appService = app.get(AppService);
   const port = appService.getPort();
   await app.listen(port);
