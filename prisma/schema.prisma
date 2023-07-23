@@ -10,6 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String
+  password     String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  CartProducts CartProduct[]
+
+  @@map("users")
+}
+
 model Product {
   id          Int           @id @default(autoincrement())
   name        String
@@ -23,23 +34,13 @@ model Product {
   @@map("products")
 }
 
-model Cart {
-  id           Int           @id @default(autoincrement())
-  userId       Int           @unique
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  CartProducts CartProduct[]
-
-  @@map("carts")
-}
-
 model CartProduct {
   id        Int     @id @default(autoincrement())
-  quantity  Int
-  Product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(0)
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
-  Cart      Cart    @relation(fields: [cartId], references: [id])
-  cartId    Int
+  User      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
 
   @@map("cart_products")
 }
