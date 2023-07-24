@@ -8,4 +8,8 @@ export class AppService {
   getPort(): number {
     return this.configService.get<number>('PORT', 3000);
   }
+
+  getSecret(): string {
+    return this.configService.get<string>('JWT_SECRET', 'secret');
+  }
 }
