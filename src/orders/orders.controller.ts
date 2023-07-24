@@ -19,9 +19,4 @@ export class OrdersController {
   findAll() {
     return this.ordersService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
-  }
 }
