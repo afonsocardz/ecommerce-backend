@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CartProduct, Product } from '@prisma/client';
+import { Product } from '@prisma/client';
 import { ProductEntity } from 'src/product/product.entity';
+import { CartProductEntity } from '../entities/cart-product.entity';
 
-export class CartProductDto implements CartProduct {
+export class CartProductDto implements Omit<CartProductEntity, 'userId'> {
   @ApiProperty()
   id: number;
 
@@ -11,9 +12,6 @@ export class CartProductDto implements CartProduct {
 
   @ApiProperty()
   productId: number;
-
-  @ApiProperty()
-  userId: number;
 
   @ApiProperty({ type: [ProductEntity] })
   Product: Product;

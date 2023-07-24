@@ -8,6 +8,7 @@ import { CartProductRepository } from './cart-products.repository';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { CartProductDto } from './dto/cart-product.dto';
 import { Prisma } from '@prisma/client';
+import { TCartProductReturnData } from './interfaces/cart-product.interface';
 
 @Injectable()
 export class CartProductsService {
@@ -55,7 +56,7 @@ export class CartProductsService {
   }
 
   private calculateSubtotal(
-    cartProducts: CartProductEntity[],
+    cartProducts: TCartProductReturnData[],
   ): CartProductDto[] {
     return cartProducts.map<CartProductDto>((item) => ({
       ...item,

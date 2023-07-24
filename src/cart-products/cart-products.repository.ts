@@ -3,6 +3,7 @@ import { CartProductEntity } from './entities/cart-product.entity';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { TCartProductReturnData } from './interfaces/cart-product.interface';
 
 @Injectable()
 export class CartProductRepository {
@@ -29,12 +30,15 @@ export class CartProductRepository {
     }
   }
 
-  async findCartProducts(userId: number): Promise<CartProductEntity[]> {
+  async findCartProducts(userId: number): Promise<TCartProductReturnData[]> {
     const cartProducts = await this.prisma.cartProduct.findMany({
       where: {
         userId,
       },
-      include: {
+      select: {
+        id: true,
+        productId: true,
+        quantity: true,
         Product: true,
       },
     });
