@@ -1,7 +1,7 @@
-import { CartProductDto } from 'src/cart-products/dto/cart-product.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { TPreparedCartProducts } from './interfaces/orders.interface';
+import { OrderStatus, Prisma } from '@prisma/client';
 
 @Injectable()
 export class OrderRepository {
@@ -21,6 +21,17 @@ export class OrderRepository {
             data: products,
           },
         },
+      },
+    });
+  }
+
+  async completeOrder(orderId: number): Promise<Prisma.BatchPayload> {
+    return await this.prisma.order.updateMany({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status: OrderStatus.COMPLETED,
       },
     });
   }

@@ -3,7 +3,6 @@ import { OrderRepository } from './orders.repository';
 import { CartProductsService } from 'src/cart-products/cart-products.service';
 import { CartProductDto } from 'src/cart-products/dto/cart-product.dto';
 import { TPreparedCartProducts } from './interfaces/orders.interface';
-import { ProductEntity } from 'src/product/product.entity';
 
 @Injectable()
 export class OrdersService {
@@ -23,13 +22,15 @@ export class OrdersService {
     );
   }
 
-  prepareCartProducts(products: CartProductDto[]): TPreparedCartProducts[] {
+  private prepareCartProducts(
+    products: CartProductDto[],
+  ): TPreparedCartProducts[] {
     return products.map<TPreparedCartProducts>(
       ({ Product, ...rest }: CartProductDto) => rest,
     );
   }
 
-  calculateTotal(products: CartProductDto[]): number {
+  private calculateTotal(products: CartProductDto[]): number {
     const subTotals = products.map(
       (product: CartProductDto) => product.subtotal,
     );
@@ -37,6 +38,10 @@ export class OrdersService {
       (previous: number, current: number) => previous + current,
     );
     return totalAmount;
+  }
+
+  async completeOrder(orderId: number) {
+    await this.ordersRepository.completeOrder(orderId);
   }
 
   findAll() {
