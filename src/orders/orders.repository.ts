@@ -25,13 +25,26 @@ export class OrderRepository {
     });
   }
 
-  async completeOrder(orderId: number): Promise<Prisma.BatchPayload> {
+  async completeOrder(
+    orderId: number,
+    userId: number,
+  ): Promise<Prisma.BatchPayload> {
     return await this.prisma.order.updateMany({
       where: {
         id: orderId,
+        userId,
       },
       data: {
         status: OrderStatus.COMPLETED,
+      },
+    });
+  }
+
+  async findUserOrder(userId: number, orderId: number) {
+    return await this.prisma.order.findFirst({
+      where: {
+        id: orderId,
+        userId,
       },
     });
   }

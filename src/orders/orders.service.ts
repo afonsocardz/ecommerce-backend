@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrderRepository } from './orders.repository';
 import { CartProductsService } from 'src/cart-products/cart-products.service';
 import { CartProductDto } from 'src/cart-products/dto/cart-product.dto';
@@ -40,15 +40,22 @@ export class OrdersService {
     return totalAmount;
   }
 
-  async completeOrder(orderId: number) {
-    await this.ordersRepository.completeOrder(orderId);
+  async completeOrder(orderId: number, userId) {
+    const result = await this.ordersRepository.completeOrder(orderId, userId);
+    if (result.count === 0) {
+      throw new NotFoundException();
+    }
+  }
+
+  async findOrderOwner(orderId: number, userId: number) {
+    const order = await this.ordersRepository.findUserOrder(userId, orderId);
+    if (!order) {
+      throw new NotFoundException();
+    }
+    return order;
   }
 
   findAll() {
     return `This action returns all orders`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
   }
 }
