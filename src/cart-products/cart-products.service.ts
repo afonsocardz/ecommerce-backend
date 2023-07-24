@@ -1,0 +1,73 @@
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
+import { CreateCartProductDto } from './dto/create-cart-product.dto';
+import { CartProductRepository } from './cart-products.repository';
+import { CartProductEntity } from './entities/cart-product.entity';
+import { CartProductDto } from './dto/cart-product.dto';
+import { Prisma } from '@prisma/client';
+
+@Injectable()
+export class CartProductsService {
+  constructor(private readonly cartProductRepository: CartProductRepository) {}
+
+  async create(
+    { productId, quantity }: CreateCartProductDto,
+    userId: number,
+  ): Promise<CartProductEntity> {
+    const result = await this.cartProductRepository.insertCartProduct(
+      userId,
+      productId,
+      quantity,
+    );
+
+    if (result instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new ConflictException();
+    }
+
+    return result;
+  }
+
+  async updateCartProductQty(
+    cartProductId: number,
+    qty: number,
+    userId: number,
+  ): Promise<void> {
+    const { count: updateCount } =
+      await this.cartProductRepository.updateCartProductQty(
+        cartProductId,
+        qty,
+        userId,
+      );
+    if (updateCount === 0) {
+      throw new NotFoundException();
+    }
+  }
+
+  async findCartProducts(userId: number): Promise<CartProductDto[]> {
+    const cartProducts = await this.cartProductRepository.findCartProducts(
+      userId,
+    );
+
+    return this.calculateSubtotal(cartProducts);
+  }
+
+  private calculateSubtotal(
+    cartProducts: CartProductEntity[],
+  ): CartProductDto[] {
+    return cartProducts.map<CartProductDto>((item) => ({
+      ...item,
+      subtotal: item.quantity * item.Product.price,
+    }));
+  }
+
+  async remove(cartProductId: number, userId: number): Promise<void> {
+    const { count: deletedCount } =
+      await this.cartProductRepository.removeCartProduct(cartProductId, userId);
+    if (deletedCount === 0) {
+      throw new NotFoundException();
+    }
+  }
+}
