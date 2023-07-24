@@ -6,6 +6,7 @@ import { OrderRepository } from './orders.repository';
 import { CartProductsModule } from 'src/cart-products/cart-products.module';
 
 @Module({
+  exports: [OrdersService],
   imports: [CartProductsModule],
   controllers: [OrdersController],
   providers: [OrdersService, PrismaService, OrderRepository],
