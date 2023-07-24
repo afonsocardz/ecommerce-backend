@@ -58,7 +58,7 @@ enum OrderStatus {
 model Order {
   id          Int         @id @default(autoincrement())
   totalAmount Float
-  status      OrderStatus
+  status      OrderStatus @default(PENDING)
   createdAt   DateTime    @default(now())
 
   User   User @relation(fields: [userId], references: [id])
