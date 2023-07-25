@@ -35,4 +35,12 @@ export class UsersService {
     const user = await this.findUserByEmail(email);
     if (user) throw new ConflictException();
   }
+
+  async findUserById(userId: number): Promise<UserEntity> {
+    return await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+  }
 }
