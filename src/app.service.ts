@@ -26,4 +26,8 @@ export class AppService {
     };
     return options;
   }
+
+  getOrigin(): string {
+    return this.configService.get<string>('APP_URL');
+  }
 }
