@@ -26,5 +26,5 @@ export class CreateProductDto {
 export class SearchProductsDto {
   @IsString()
   @ApiProperty()
-  searchQuery: string;
+  search: string;
 }

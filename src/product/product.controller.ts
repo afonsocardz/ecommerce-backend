@@ -38,14 +38,14 @@ export class ProductController {
     );
   }
 
-  @Post('search')
-  @ApiQuery({ name: 'searchQuery' })
+  @Get('search')
+  @ApiQuery({ name: 'search' })
   @ApiOperation({ summary: 'Search for products' })
   @ApiOkResponse({ type: [ProductEntity], isArray: true })
   async searchProducts(
     @Query() searchProductsDto: SearchProductsDto,
   ): Promise<ProductEntity[]> {
-    return this.productService.searchProducts(searchProductsDto.searchQuery);
+    return this.productService.searchProducts(searchProductsDto.search);
   }
 
   @Get()
