@@ -8,10 +8,9 @@ import {
   Get,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto, SearchProductsDto } from './product.dto';
+import { CreateProductDto, FilterProductsDto } from './product.dto';
 import {
   ApiOperation,
-  ApiQuery,
   ApiCreatedResponse,
   ApiTags,
   ApiOkResponse,
@@ -38,21 +37,16 @@ export class ProductController {
     );
   }
 
-  @Get('search')
-  @ApiQuery({ name: 'search' })
+  @Get()
   @ApiOperation({ summary: 'Search for products' })
   @ApiOkResponse({ type: [ProductEntity], isArray: true })
-  async searchProducts(
-    @Query() searchProductsDto: SearchProductsDto,
+  async getProducts(
+    @Query() filters: FilterProductsDto,
+    @Query('page') page: number = 1,
+    @Query('perPage') perPage: number = 10,
   ): Promise<ProductEntity[]> {
-    return this.productService.searchProducts(searchProductsDto.search);
-  }
-
-  @Get()
-  @ApiOperation({ summary: 'Find all products' })
-  @ApiOkResponse({ type: [ProductEntity], isArray: true })
-  async findAllProducts(): Promise<ProductEntity[]> {
-    return this.productService.findAllProducts();
+    const skip = (page - 1) * perPage;
+    return this.productService.getProducts(filters, skip, perPage);
   }
 
   @Get(':productId')

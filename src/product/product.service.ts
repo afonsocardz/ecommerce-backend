@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { ProductEntity } from './product.entity';
+import { FilterProductsDto } from './product.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductService {
@@ -20,12 +22,25 @@ export class ProductService {
     );
   }
 
-  async searchProducts(searchQuery: string): Promise<ProductEntity[]> {
-    return await this.productRepository.searchProducts(searchQuery);
-  }
+  async getProducts(
+    filters: FilterProductsDto,
+    skip: number,
+    take: number,
+  ): Promise<ProductEntity[]> {
+    const where: Prisma.ProductWhereInput = {};
 
-  async findAllProducts(): Promise<ProductEntity[]> {
-    return await this.productRepository.findAllProducts();
+    if (filters.search?.length > 0) {
+      where.name = {
+        contains: filters.search,
+        mode: 'insensitive',
+      };
+      where.description = {
+        contains: filters.search,
+        mode: 'insensitive',
+      };
+    }
+
+    return await this.productRepository.findAllProducts(take, skip, where);
   }
 
   async findProductById(productId: number): Promise<ProductEntity> {

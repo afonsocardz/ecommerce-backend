@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ProductEntity } from './product.entity';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductRepository {
@@ -22,22 +23,20 @@ export class ProductRepository {
     });
   }
 
-  async searchProducts(searchQuery: string): Promise<ProductEntity[]> {
-    return this.prisma.product.findMany({
-      where: {
-        name: {
-          contains: searchQuery,
-        },
-      },
+  async findAllProducts(
+    take: number,
+    skip: number,
+    where: Prisma.ProductWhereInput,
+  ): Promise<ProductEntity[]> {
+    return await this.prisma.product.findMany({
+      take,
+      skip,
+      where,
     });
   }
 
-  async findAllProducts(): Promise<ProductEntity[]> {
-    return this.prisma.product.findMany({});
-  }
-
   async findProductById(productId: number): Promise<ProductEntity> {
-    return this.prisma.product.findFirst({
+    return await this.prisma.product.findFirst({
       where: {
         id: productId,
       },
