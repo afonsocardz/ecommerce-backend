@@ -30,15 +30,23 @@ export class ProductService {
     const where: Prisma.ProductWhereInput = {};
 
     if (filters.search?.length > 0) {
-      where.name = {
-        contains: filters.search,
-        mode: 'insensitive',
-      };
-      where.description = {
-        contains: filters.search,
-        mode: 'insensitive',
-      };
+      where.OR = [
+        {
+          description: {
+            contains: filters.search,
+            mode: 'insensitive',
+          },
+        },
+        {
+          name: {
+            contains: filters.search,
+            mode: 'insensitive',
+          },
+        },
+      ];
     }
+
+    console.log(where);
 
     return await this.productRepository.findAllProducts(take, skip, where);
   }
