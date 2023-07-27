@@ -1,5 +1,5 @@
 // auth.controller.ts
-import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthDto } from './auth.dto';
@@ -20,5 +20,11 @@ export class AuthController {
     res.cookie('token', token, { httpOnly: true });
 
     return res.sendStatus(HttpStatus.OK);
+  }
+
+  @Get('status')
+  @ApiOkResponse()
+  status() {
+    return;
   }
 }

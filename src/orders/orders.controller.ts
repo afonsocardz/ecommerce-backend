@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Param, Req } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { AuthorizedRequest } from 'src/middlewares/jwt.interface';
+import { AuthorizedRequest } from 'src/jwt/jwt.interface';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('orders')

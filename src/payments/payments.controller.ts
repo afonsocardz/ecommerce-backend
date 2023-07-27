@@ -7,7 +7,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { AuthorizedRequest } from 'src/middlewares/jwt.interface';
+import { AuthorizedRequest } from 'src/jwt/jwt.interface';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 

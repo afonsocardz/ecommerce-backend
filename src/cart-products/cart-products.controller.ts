@@ -23,7 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { CartProductDto } from './dto/cart-product.dto';
-import { AuthorizedRequest } from 'src/middlewares/jwt.interface';
+import { AuthorizedRequest } from 'src/jwt/jwt.interface';
 
 @Controller('cart-products')
 @ApiTags('cart-products')
