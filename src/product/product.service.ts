@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { ProductEntity } from './product.entity';
-import { FilterProductsDto } from './product.dto';
+import { FilterProductsDto, ProductsResponse } from './product.dto';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -24,10 +24,11 @@ export class ProductService {
 
   async getProducts(
     filters: FilterProductsDto,
-    skip: number,
+    page: number,
     take: number,
-  ): Promise<ProductEntity[]> {
+  ): Promise<ProductsResponse> {
     const where: Prisma.ProductWhereInput = {};
+    const skip = (page - 1) * take;
 
     if (filters.search?.length > 0) {
       where.OR = [
@@ -46,9 +47,21 @@ export class ProductService {
       ];
     }
 
-    console.log(where);
+    const products = await this.productRepository.findAllProducts(
+      take,
+      skip,
+      where,
+    );
 
-    return await this.productRepository.findAllProducts(take, skip, where);
+    const totalCount = await this.productRepository.countAllProducts(where);
+
+    const totalPages = Math.ceil(totalCount / take);
+
+    return {
+      currentPage: page,
+      totalPages,
+      products,
+    };
   }
 
   async findProductById(productId: number): Promise<ProductEntity> {

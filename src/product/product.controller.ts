@@ -8,7 +8,11 @@ import {
   Get,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto, FilterProductsDto } from './product.dto';
+import {
+  CreateProductDto,
+  FilterProductsDto,
+  ProductsResponse,
+} from './product.dto';
 import {
   ApiOperation,
   ApiCreatedResponse,
@@ -44,9 +48,8 @@ export class ProductController {
     @Query() filters: FilterProductsDto,
     @Query('page') page: number = 1,
     @Query('perPage') perPage: number = 10,
-  ): Promise<ProductEntity[]> {
-    const skip = (page - 1) * perPage;
-    return this.productService.getProducts(filters, skip, perPage);
+  ): Promise<ProductsResponse> {
+    return this.productService.getProducts(filters, page, perPage);
   }
 
   @Get(':productId')

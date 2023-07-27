@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ProductEntity } from './product.entity';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -28,4 +29,15 @@ export class FilterProductsDto {
   @IsOptional()
   @ApiProperty()
   search?: string;
+}
+
+export class ProductsResponse {
+  @ApiProperty()
+  totalPages: number;
+
+  @ApiProperty()
+  currentPage: number;
+
+  @ApiProperty({ isArray: true, type: [ProductEntity] })
+  products: ProductEntity[];
 }
