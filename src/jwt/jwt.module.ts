@@ -25,9 +25,8 @@ export class CustomJwtModule implements NestModule {
       .apply(JwtMiddleware)
       .exclude(
         { path: 'users', method: RequestMethod.POST },
-        { path: 'auth/login', method: RequestMethod.POST },
         { path: 'products', method: RequestMethod.GET },
-        { path: 'jwt', method: RequestMethod.GET },
+        'auth/login',
       )
       .forRoutes('*');
   }
