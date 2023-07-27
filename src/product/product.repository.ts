@@ -35,6 +35,12 @@ export class ProductRepository {
     });
   }
 
+  async countAllProducts(where: Prisma.ProductWhereInput) {
+    return await this.prisma.product.count({
+      where,
+    });
+  }
+
   async findProductById(productId: number): Promise<ProductEntity> {
     return await this.prisma.product.findFirst({
       where: {
