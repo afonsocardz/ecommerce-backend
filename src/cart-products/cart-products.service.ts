@@ -71,4 +71,11 @@ export class CartProductsService {
       throw new NotFoundException();
     }
   }
+
+  async clearCart(userId: number) {
+    const { count } = await this.cartProductRepository.clearCart(userId);
+    if (count === 0) {
+      throw new NotFoundException();
+    }
+  }
 }

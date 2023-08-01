@@ -72,4 +72,12 @@ export class CartProductRepository {
       },
     });
   }
+
+  async clearCart(userId: number): Promise<Prisma.BatchPayload> {
+    return await this.prisma.cartProduct.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }
