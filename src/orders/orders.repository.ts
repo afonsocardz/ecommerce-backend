@@ -57,6 +57,7 @@ export class OrderRepository {
       select: {
         id: true,
         totalAmount: true,
+        status: true,
         OrderProduct: {
           include: {
             Product: true,

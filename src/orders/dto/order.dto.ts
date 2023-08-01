@@ -3,7 +3,7 @@ import {
   OrderProductWithProduct,
   OrderWitProducts,
 } from '../interfaces/orders.interface';
-import { Order } from '@prisma/client';
+import { Order, OrderStatus } from '@prisma/client';
 
 export class OrderWithProductDto implements OrderWitProducts {
   @ApiProperty()
@@ -11,6 +11,9 @@ export class OrderWithProductDto implements OrderWitProducts {
 
   @ApiProperty()
   totalAmount: number;
+
+  @ApiProperty()
+  status: OrderStatus;
 
   @ApiProperty()
   OrderProduct: OrderProductWithProduct[];
