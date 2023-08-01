@@ -1,7 +1,11 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { TPreparedCartProducts } from './interfaces/orders.interface';
+import {
+  OrderWitProducts,
+  TPreparedCartProducts,
+} from './interfaces/orders.interface';
 import { OrderStatus, Prisma } from '@prisma/client';
+import { CreatedOrderDto } from './dto/order.dto';
 
 @Injectable()
 export class OrderRepository {
@@ -11,8 +15,8 @@ export class OrderRepository {
     userId: number,
     totalAmount: number,
     products: TPreparedCartProducts[],
-  ) {
-    await this.prisma.order.create({
+  ): Promise<CreatedOrderDto> {
+    return await this.prisma.order.create({
       data: {
         userId,
         totalAmount,
@@ -22,6 +26,7 @@ export class OrderRepository {
           },
         },
       },
+      select: { id: true },
     });
   }
 
@@ -40,11 +45,23 @@ export class OrderRepository {
     });
   }
 
-  async findUserOrder(userId: number, orderId: number) {
+  async findUserOrder(
+    userId: number,
+    orderId: number,
+  ): Promise<OrderWitProducts> {
     return await this.prisma.order.findFirst({
       where: {
         id: orderId,
         userId,
+      },
+      select: {
+        id: true,
+        totalAmount: true,
+        OrderProduct: {
+          include: {
+            Product: true,
+          },
+        },
       },
     });
   }

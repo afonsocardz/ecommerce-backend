@@ -15,7 +15,7 @@ export class OrdersService {
     const products = await this.cartProductsService.findCartProducts(userId);
     const totalAmount = this.calculateTotal(products);
     const preparedProducts = this.prepareCartProducts(products);
-    await this.ordersRepository.createOrder(
+    return await this.ordersRepository.createOrder(
       userId,
       totalAmount,
       preparedProducts,
@@ -26,7 +26,7 @@ export class OrdersService {
     products: CartProductDto[],
   ): TPreparedCartProducts[] {
     return products.map<TPreparedCartProducts>(
-      ({ Product, ...rest }: CartProductDto) => rest,
+      ({ Product, id, ...rest }: CartProductDto) => rest,
     );
   }
 
@@ -53,9 +53,5 @@ export class OrdersService {
       throw new NotFoundException();
     }
     return order;
-  }
-
-  findAll() {
-    return `This action returns all orders`;
   }
 }
