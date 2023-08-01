@@ -40,11 +40,12 @@ export class OrdersService {
     return totalAmount;
   }
 
-  async completeOrder(orderId: number, userId) {
+  async completeOrder(orderId: number, userId: number) {
     const result = await this.ordersRepository.completeOrder(orderId, userId);
     if (result.count === 0) {
       throw new NotFoundException();
     }
+    await this.cartProductsService.clearCart(userId);
   }
 
   async findOrderOwner(orderId: number, userId: number) {
