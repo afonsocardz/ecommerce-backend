@@ -21,10 +21,10 @@ export class PaymentsService {
     const result = await this.fakePaymentGateway(userPaymentMethod);
 
     if (result === PaymentStatus.SUCCESSFUL) {
-      this.ordersService.completeOrder(orderId, userId);
+      await this.ordersService.completeOrder(orderId, userId);
+      await this.emailService.sendConfirmationEmail(user.email, order.id);
+      return { orderId };
     }
-
-    await this.emailService.sendConfirmationEmail(user.email, order.id);
   }
 
   private async fakePaymentGateway(
