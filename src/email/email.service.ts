@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { AppService } from 'src/app.service';
+import { BadGatewayException } from '@nestjs/common';
 
 @Injectable()
 export class EmailService {
@@ -22,6 +23,7 @@ export class EmailService {
       await this.transporter.sendMail(mailOptions);
     } catch (error) {
       console.error('Error sending confirmation email:', error);
+      throw new BadGatewayException();
     }
   }
 }
