@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { CreateProductDto } from 'src/product/product.dto';
+
 const prisma = new PrismaClient();
 
 function productsFactory() {
@@ -17,6 +18,28 @@ function productsFactory() {
   return products;
 }
 
+function userFactory() {
+  async function hasUser() {
+    const userCount = await prisma.user.count();
+    return userCount > 0;
+  }
+
+  async function createUser() {
+    if (hasUser()) {
+      const email = process.env.EMAIL_EXAMPLE;
+      const password = process.env.STRONG_PASSWORD_EXAMPLE;
+      await prisma.user.create({
+        data: {
+          email,
+          password,
+        },
+      });
+    }
+  }
+
+  return { createUser };
+}
+
 async function main() {
   const hasProducts = await prisma.product.count();
   if (hasProducts === 0) {
@@ -24,6 +47,7 @@ async function main() {
       data: productsFactory(),
     });
   }
+  await userFactory().createUser();
 }
 
 main()
