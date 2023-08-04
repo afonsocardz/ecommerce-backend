@@ -11,6 +11,7 @@ import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { CustomJwtModule } from './jwt/jwt.module';
 import { DisconnectMiddleware } from './prisma/disconnect.middleware';
+import { RequestScopedPrismaService } from './prisma/scoped-request-prisma.service';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { DisconnectMiddleware } from './prisma/disconnect.middleware';
     CustomJwtModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RequestScopedPrismaService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
