@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { CreateProductDto } from 'src/product/product.dto';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -29,10 +30,12 @@ function userFactory() {
       const email = process.env.EMAIL_EXAMPLE;
       console.log(email);
       const password = process.env.STRONG_PASSWORD_EXAMPLE;
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(password, saltOrRounds);
       await prisma.user.create({
         data: {
           email,
-          password,
+          password: hash,
         },
       });
     }
