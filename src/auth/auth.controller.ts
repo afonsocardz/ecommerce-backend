@@ -1,4 +1,3 @@
-// auth.controller.ts
 import { Controller, Post, Body, Res, HttpStatus, Get } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -21,6 +20,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
+      expires: new Date(new Date().getTime() + 30 * 1000),
     });
 
     return res.sendStatus(HttpStatus.OK);
