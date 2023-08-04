@@ -1,10 +1,10 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { RequestScopedPrismaService } from './scoped-request-prisma.service';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class DisconnectMiddleware implements NestMiddleware {
-  constructor(private readonly prismaService: RequestScopedPrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   use(req: Request, res: Response, next: () => void) {
     res.on('finish', () => {

@@ -1,4 +1,4 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -11,7 +11,6 @@ import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { CustomJwtModule } from './jwt/jwt.module';
 import { DisconnectMiddleware } from './prisma/disconnect.middleware';
-import { RequestScopedPrismaService } from './prisma/scoped-request-prisma.service';
 
 @Module({
   imports: [
@@ -27,12 +26,9 @@ import { RequestScopedPrismaService } from './prisma/scoped-request-prisma.servi
     CustomJwtModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RequestScopedPrismaService],
+  providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(DisconnectMiddleware).forRoutes('*');
-  }
+export class AppModule {
   configureSwagger(app) {
     const options = new DocumentBuilder()
       .setTitle('E-commerce API')
