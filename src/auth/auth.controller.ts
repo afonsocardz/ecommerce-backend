@@ -16,14 +16,12 @@ export class AuthController {
 
     const token = await this.authService.login(email, password);
 
-    res.cookie('token', token, {
+    return res.sendStatus(HttpStatus.OK).cookie('token', token, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
       expires: new Date(new Date().getTime() + 30 * 1000),
     });
-
-    return res.sendStatus(HttpStatus.OK);
   }
 
   @Get('status')
