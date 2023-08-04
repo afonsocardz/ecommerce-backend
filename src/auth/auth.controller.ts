@@ -17,7 +17,11 @@ export class AuthController {
 
     const token = await this.authService.login(email, password);
 
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
 
     return res.sendStatus(HttpStatus.OK);
   }
