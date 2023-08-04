@@ -19,7 +19,7 @@ export class AuthController {
     res.cookie('token', token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
       expires: new Date(new Date().getTime() + 30 * 1000),
     });
 
