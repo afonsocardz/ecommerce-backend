@@ -21,7 +21,6 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        expires: new Date(new Date().getTime() + 30 * 1000),
       })
       .sendStatus(HttpStatus.OK);
   }
