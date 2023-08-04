@@ -10,7 +10,6 @@ import { AuthModule } from './auth/auth.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { CustomJwtModule } from './jwt/jwt.module';
-import { DisconnectMiddleware } from './prisma/disconnect.middleware';
 
 @Module({
   imports: [

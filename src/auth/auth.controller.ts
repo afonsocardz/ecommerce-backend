@@ -35,7 +35,13 @@ export class AuthController {
   @Get('logout')
   @ApiOkResponse()
   logout(@Res() res: Response) {
-    res.clearCookie('token', { path: '/' });
-    return res.sendStatus(HttpStatus.OK);
+    return res
+      .clearCookie('token', {
+        path: '/',
+        sameSite: 'none',
+        secure: true,
+        httpOnly: true,
+      })
+      .sendStatus(HttpStatus.OK);
   }
 }
