@@ -1,14 +1,16 @@
-# Usa a imagem oficial do Node.js como base
-FROM node:16-alpine
+# Base image
+FROM node:18
 
-# Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copia o arquivo package.json e package-lock.json para o diretório de trabalho
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-# Instala as dependências da aplicação
+# Install app dependencies
 RUN npm install
 
-# Copia o restante do código fonte da aplicação para o diretório de trabalho
-COPY . .
+# Bundle app source
+COPY . ./
+
+

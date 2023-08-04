@@ -2,22 +2,26 @@ version: '3'
 
 services:
   app:
-    image: node:16-alpine
-    working_dir: /app
+    build: .
     expose:
       - ${PORT}
     volumes:
-      - .:/app
+      - .:/usr/src/app
     depends_on:
-      - db
+      - database
     ports:
-      - '3000:3000'
+      - ${PORT}:${PORT}
     command:
-      - npm run prisma:migrate
-      - npm run prisma:seed
-      - npm start
+      - /bin/sh
+      - -c
+      - |
+        npm run prisma:generate
+        npm run prisma:migrate
+        npm run prisma:seed
+        npm run build
+        npm run start:prod
 
-  db:
+  database:
     image: postgres:latest
     restart: always
     hostname: ${POSTGRES_HOST}

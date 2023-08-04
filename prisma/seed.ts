@@ -19,14 +19,15 @@ function productsFactory() {
 }
 
 function userFactory() {
-  async function hasUser() {
+  async function userCount() {
     const userCount = await prisma.user.count();
-    return userCount > 0;
+    return userCount;
   }
 
   async function createUser() {
-    if (hasUser()) {
+    if ((await userCount()) === 0) {
       const email = process.env.EMAIL_EXAMPLE;
+      console.log(email);
       const password = process.env.STRONG_PASSWORD_EXAMPLE;
       await prisma.user.create({
         data: {
