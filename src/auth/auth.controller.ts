@@ -16,8 +16,12 @@ export class AuthController {
 
     const token = await this.authService.login(email, password);
 
+    const expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() + 10);
+
     return res
       .cookie('token', token, {
+        expires: expirationDate,
         httpOnly: true,
         secure: true,
         sameSite: 'none',

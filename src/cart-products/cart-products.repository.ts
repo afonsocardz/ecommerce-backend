@@ -45,6 +45,21 @@ export class CartProductRepository {
     return cartProducts;
   }
 
+  async findOne(cartProductId: number, userId: number) {
+    return await this.prisma.cartProduct.findFirst({
+      where: {
+        userId,
+        id: cartProductId,
+      },
+      select: {
+        id: true,
+        productId: true,
+        quantity: true,
+        Product: true,
+      },
+    });
+  }
+
   async updateCartProductQty(
     cartProductId: number,
     quantity: number,

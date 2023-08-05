@@ -69,6 +69,16 @@ export class CartProductsController {
     );
   }
 
+  @Get(':cartProductId')
+  @ApiOkResponse()
+  async findOne(
+    @Param('cartProductId') cartProductId: number,
+    @Req() req: AuthorizedRequest,
+  ) {
+    const userId = req.userId;
+    return await this.cartProductsService.findOne(userId, cartProductId);
+  }
+
   @Delete(':cartProductId')
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiParam({ name: 'cartProductId' })
