@@ -69,14 +69,14 @@ export class CartProductsController {
     );
   }
 
-  @Get(':cartProductId')
+  @Get(':productId')
   @ApiOkResponse()
   async findOne(
-    @Param('cartProductId') cartProductId: number,
+    @Param('productId') productId: number,
     @Req() req: AuthorizedRequest,
   ) {
     const userId = req.userId;
-    return await this.cartProductsService.findOne(userId, cartProductId);
+    return await this.cartProductsService.findOne(userId, productId);
   }
 
   @Delete(':cartProductId')

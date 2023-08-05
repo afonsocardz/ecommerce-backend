@@ -55,8 +55,8 @@ export class CartProductsService {
     return this.calculateSubtotal(cartProducts);
   }
 
-  async findOne(userId: number, cartProductId: number) {
-    return await this.cartProductRepository.findOne(cartProductId, userId);
+  async findOne(userId: number, productId: number) {
+    return await this.cartProductRepository.findOne(productId, userId);
   }
 
   private calculateSubtotal(
