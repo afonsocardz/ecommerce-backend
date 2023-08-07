@@ -33,7 +33,9 @@ export class EmailService {
       },
     });
 
-    const credentials = JSON.parse(value as string) as nodemailer.TestAccount;
+    const credentials = JSON.parse(
+      JSON.stringify(value),
+    ) as nodemailer.TestAccount;
 
     const transporter = nodemailer.createTransport({
       host: credentials.smtp.host,
