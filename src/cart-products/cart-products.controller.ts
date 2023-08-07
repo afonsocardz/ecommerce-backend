@@ -52,18 +52,18 @@ export class CartProductsController {
     return await this.cartProductsService.findCartProducts(userId);
   }
 
-  @Patch(':cartProductId')
-  @ApiParam({ name: 'cartProductId' })
+  @Patch(':productId')
+  @ApiParam({ name: 'productId' })
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiOkResponse()
   async updateCartProductQty(
-    @Param('cartProductId') cartProductId: number,
+    @Param('productId') productId: number,
     @Body() updateCartProductDto: UpdateCartProductQtyDto,
     @Req() req: AuthorizedRequest,
   ) {
     const userId = req.userId;
     await this.cartProductsService.updateCartProductQty(
-      cartProductId,
+      productId,
       updateCartProductDto.quantity,
       userId,
     );
@@ -79,15 +79,15 @@ export class CartProductsController {
     return await this.cartProductsService.findOne(userId, productId);
   }
 
-  @Delete(':cartProductId')
+  @Delete(':productId')
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiParam({ name: 'cartProductId' })
+  @ApiParam({ name: 'productId' })
   @ApiNoContentResponse()
   async remove(
-    @Param('cartProductId') cartProductId: number,
+    @Param('productId') productId: number,
     @Req() req: AuthorizedRequest,
   ) {
     const userId = req.userId;
-    await this.cartProductsService.remove(cartProductId, userId);
+    await this.cartProductsService.remove(productId, userId);
   }
 }

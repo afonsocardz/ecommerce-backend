@@ -32,13 +32,13 @@ export class CartProductsService {
   }
 
   async updateCartProductQty(
-    cartProductId: number,
+    productId: number,
     qty: number,
     userId: number,
   ): Promise<void> {
     const { count: updateCount } =
       await this.cartProductRepository.updateCartProductQty(
-        cartProductId,
+        productId,
         qty,
         userId,
       );
@@ -68,9 +68,9 @@ export class CartProductsService {
     }));
   }
 
-  async remove(cartProductId: number, userId: number): Promise<void> {
+  async remove(productId: number, userId: number): Promise<void> {
     const { count: deletedCount } =
-      await this.cartProductRepository.removeCartProduct(cartProductId, userId);
+      await this.cartProductRepository.removeCartProduct(productId, userId);
     if (deletedCount === 0) {
       throw new NotFoundException();
     }

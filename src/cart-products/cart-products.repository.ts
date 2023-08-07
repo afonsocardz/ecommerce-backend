@@ -61,13 +61,13 @@ export class CartProductRepository {
   }
 
   async updateCartProductQty(
-    cartProductId: number,
+    productId: number,
     quantity: number,
     userId: number,
   ): Promise<Prisma.BatchPayload> {
     return await this.prisma.cartProduct.updateMany({
       where: {
-        id: cartProductId,
+        productId,
         userId,
       },
       data: {
@@ -77,12 +77,12 @@ export class CartProductRepository {
   }
 
   async removeCartProduct(
-    cartProductId: number,
+    productId: number,
     userId: number,
   ): Promise<Prisma.BatchPayload> {
     return await this.prisma.cartProduct.deleteMany({
       where: {
-        id: cartProductId,
+        productId,
         userId,
       },
     });
