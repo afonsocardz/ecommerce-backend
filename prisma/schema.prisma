@@ -99,3 +99,11 @@ model Payment {
 
   @@map("payments")
 }
+
+model Config {
+  id    Int    @id @default(autoincrement())
+  key   String
+  value Json
+
+  @@map("configs")
+}

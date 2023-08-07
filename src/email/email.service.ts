@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { AppService } from 'src/app.service';
 import { BadGatewayException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class EmailService {
-  private transporter: nodemailer.Transporter;
-
-  constructor(private readonly appService: AppService) {
-    this.transporter = nodemailer.createTransport(this.appService.getSmtp());
-  }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async sendConfirmationEmail(email: string, orderNumber: number) {
     try {
@@ -20,11 +16,34 @@ export class EmailService {
         text: `Thank you for your purchase. Your order number is: ${orderNumber}.`,
       };
 
-      const info = await this.transporter.sendMail(mailOptions);
+      const transporter = await this.createTransporter();
+
+      const info = await transporter.sendMail(mailOptions);
       return nodemailer.getTestMessageUrl(info);
     } catch (error) {
       console.error('Error sending confirmation email:', error);
       throw new BadGatewayException();
     }
+  }
+
+  async createTransporter() {
+    const { value } = await this.prismaService.config.findFirst({
+      where: {
+        key: 'email',
+      },
+    });
+
+    const credentials = JSON.parse(value as string) as nodemailer.TestAccount;
+
+    const transporter = nodemailer.createTransport({
+      host: credentials.smtp.host,
+      auth: {
+        user: credentials.user,
+        pass: credentials.pass,
+      },
+      port: credentials.smtp.port,
+    });
+
+    return transporter;
   }
 }

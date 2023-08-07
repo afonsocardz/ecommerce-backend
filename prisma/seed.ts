@@ -2,8 +2,25 @@ import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { CreateProductDto } from 'src/product/product.dto';
 import * as bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer';
 
 const prisma = new PrismaClient();
+
+function configFactory() {
+  async function createEmailConfig() {
+    const emailAccount = JSON.stringify(await nodemailer.createTestAccount());
+    const hasEmail = await prisma.config.count();
+    if (!hasEmail) {
+      await prisma.config.create({
+        data: {
+          key: 'email',
+          value: JSON.parse(emailAccount),
+        },
+      });
+    }
+  }
+  return { createEmailConfig };
+}
 
 function productsFactory() {
   const QTY = 20;
@@ -52,6 +69,8 @@ async function main() {
     });
   }
   await userFactory().createUser();
+
+  await configFactory().createEmailConfig();
 }
 
 main()
