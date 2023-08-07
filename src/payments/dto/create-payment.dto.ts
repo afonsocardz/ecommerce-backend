@@ -7,3 +7,8 @@ export class CreatePaymentDto {
   @ApiProperty()
   orderId: number;
 }
+
+export class CreatePaymentResponseDto {
+  orderId: number;
+  emailUrl: string;
+}

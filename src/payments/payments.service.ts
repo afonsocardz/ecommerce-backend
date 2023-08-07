@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PaymentStatus } from '@prisma/client';
 import { EmailService } from 'src/email/email.service';
 import { OrdersService } from 'src/orders/orders.service';
@@ -20,11 +20,17 @@ export class PaymentsService {
 
     const result = await this.fakePaymentGateway(userPaymentMethod);
 
-    if (result === PaymentStatus.SUCCESSFUL) {
-      await this.ordersService.completeOrder(orderId, userId);
-      await this.emailService.sendConfirmationEmail(user.email, order.id);
-      return { orderId };
+    if (result === PaymentStatus.FAILED) {
+      throw new UnauthorizedException();
     }
+
+    await this.ordersService.completeOrder(orderId, userId);
+    const emailUrl = await this.emailService.sendConfirmationEmail(
+      user.email,
+      order.id,
+    );
+
+    return { orderId, emailUrl: (emailUrl as string) ?? '' };
   }
 
   private async fakePaymentGateway(

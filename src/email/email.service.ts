@@ -20,7 +20,8 @@ export class EmailService {
         text: `Thank you for your purchase. Your order number is: ${orderNumber}.`,
       };
 
-      await this.transporter.sendMail(mailOptions);
+      const info = await this.transporter.sendMail(mailOptions);
+      return nodemailer.getTestMessageUrl(info);
     } catch (error) {
       console.error('Error sending confirmation email:', error);
       throw new BadGatewayException();
